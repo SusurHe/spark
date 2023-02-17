@@ -847,6 +847,15 @@ object SQLConf {
       .stringConf
       .createOptional
 
+  val ADAPTIVE_DISTRIBUTION_STRICTLY_REQUIRED_ENABLED =
+    buildConf(key = "spark.sql.adaptive.distributionStrictlyRequired.enabled")
+      .doc("If true, Spark will strictly distribute incoming records across partitions" +
+        "Otherwise, Spark may apply certain optimizations to speed up the query but break " +
+        "the distribution requirement")
+      .version("3.3.0")
+      .booleanConf
+      .createWithDefault(false)
+
   val SUBEXPRESSION_ELIMINATION_ENABLED =
     buildConf("spark.sql.subexpressionElimination.enabled")
       .internal()
@@ -4418,6 +4427,9 @@ class SQLConf extends Serializable with Logging {
   def adaptiveExecutionEnabled: Boolean = getConf(ADAPTIVE_EXECUTION_ENABLED)
 
   def adaptiveExecutionLogLevel: String = getConf(ADAPTIVE_EXECUTION_LOG_LEVEL)
+
+  def isDistributionStrictlyRequired: Boolean =
+    getConf(ADAPTIVE_DISTRIBUTION_STRICTLY_REQUIRED_ENABLED)
 
   def fetchShuffleBlocksInBatch: Boolean = getConf(FETCH_SHUFFLE_BLOCKS_IN_BATCH)
 

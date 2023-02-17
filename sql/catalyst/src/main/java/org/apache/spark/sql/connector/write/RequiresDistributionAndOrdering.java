@@ -21,6 +21,7 @@ import org.apache.spark.annotation.Experimental;
 import org.apache.spark.sql.connector.distributions.Distribution;
 import org.apache.spark.sql.connector.distributions.UnspecifiedDistribution;
 import org.apache.spark.sql.connector.expressions.SortOrder;
+import org.apache.spark.sql.internal.SQLConf;
 
 /**
  * A write that requires a specific distribution and ordering of data.
@@ -57,7 +58,7 @@ public interface RequiresDistributionAndOrdering extends Write {
    *
    * @return true if the distribution required by this write is strictly required; false otherwise.
    */
-  default boolean distributionStrictlyRequired() { return true; }
+  default boolean distributionStrictlyRequired() { return SQLConf.get().isDistributionStrictlyRequired(); }
 
   /**
    * Returns the number of partitions required by this write.
